@@ -14,7 +14,9 @@ import (
 var Command uint64 //nolint:gochecknoglobals // no need to check globals for now
 
 // DataHandler is a struct for POST request handling.
-type DataHandler struct{}
+type DataHandler struct {
+	Out chan model.Request
+}
 
 // ServeHTTP implements Handler interface.
 func (dh *DataHandler) ServeHTTP(rw http.ResponseWriter, request *http.Request) {
@@ -36,6 +38,7 @@ func (dh *DataHandler) ServeHTTP(rw http.ResponseWriter, request *http.Request) 
 		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+	dh.Out <- req
 	atomic.AddUint64(&Command, 1)
 	resp := model.Response{
 		Config:  model.Config{},
