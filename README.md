@@ -1,2 +1,2 @@
 # octo-giggle
-A test work for Septier
+A test project for Septier
